@@ -4,13 +4,67 @@
     <meta charset="UTF-8">
     <title>Lab8</title>
     <script>
-        //функция очистки canvas
+        let canvas1;
+        let canvas2;
+        let context1;
+        let context2;
+        let x;
+        let y;
+        let minx = 555, miny = 555
+        let maxx = 0, maxy = 0;
+        let canv2simvol = [];
+        let k = 0;
+        let stroka;
+
+        //функция очистки canvas 8 и 9 лабы
         function clearCanvas() {
-            const canvas = document.getElementById('canv1');
-            const context = canvas.getContext('2d');
-            context.clearRect(0, 0, canvas.width, canvas.height)
+            const canvas1 = document.getElementById('canv1');
+            const canvas2 = document.getElementById('canv2');
+            const context1 = canvas1.getContext('2d');
+            const context2 = canvas2.getContext('2d');
+            context1.clearRect(0, 0, canvas1.width, canvas1.height)
+            context2.clearRect(0, 0, canvas2.width, canvas2.height)
+            canv2data.innerHTML = "" //если убрать это строчку, будет дублировать код симолов
+            minx = 555;
+            miny = 555;
+            maxx = 0;
+            maxy = 0;
+            k = 0;
         }
-        //весь код с дока по 7 лабы
+
+        //весь код с дока по 9 лабе
+        function perenos() {
+            canvas2 = document.getElementById("canv2");
+            context2 = canvas2.getContext("2d");
+            context2.lineWidth = 1;
+            context2.drawImage(canvas1, minx, miny, maxx - minx, maxy - miny, 0, 0, 10, 10);
+            console.log(minx, miny, maxx - minx, maxy - miny)
+            for (let j = 0; j <= 9; j++) {
+                stroka = "";
+                for (let i = 0; i <= 9; i++) {
+                    if (context2.getImageData(i, j, 1, 1).data[3] > 0) {
+                        stroka = stroka + "1";
+                        canv2simvol[k] = 1;
+                    } else {
+                        stroka = stroka + "0"
+                        ;canv2simvol[k] = 0;
+                    }
+                    k = k + 1;
+                }
+                if (canv2data.innerHTML != "") {
+                    canv2data.innerHTML = canv2data.innerHTML + stroka
+                } else {
+                    canv2data.innerHTML = stroka
+                }
+            }
+
+        }
+
+        function Recoginze() {
+            perenos()
+        }
+
+        //весь код с дока по 8 + часть 9 лабы
         window.onload = function () {
             canvas1 = document.getElementById("canv1");
             context1 = canvas1.getContext("2d");
@@ -20,6 +74,19 @@
             canvas1.addEventListener("mousedown", function (ev) {
                 x = ev.offsetX;
                 y = ev.offsetY;
+                if (minx > x) {
+                    minx = x
+                }
+                if (maxx < x) {
+                    maxx = x
+                }
+                if (miny > y) {
+                    miny = y
+                }
+                if (maxy < y) {
+                    maxy = y
+                }
+
                 draw = true;
                 context1.beginPath();
                 context1.moveTo(x, y);
@@ -28,6 +95,18 @@
                 if (draw == true) {
                     x = ev.offsetX;
                     y = ev.offsetY;
+                    if (minx > x) {
+                        minx = x
+                    }
+                    if (maxx < x) {
+                        maxx = x
+                    }
+                    if (miny > y) {
+                        miny = y
+                    }
+                    if (maxy < y) {
+                        maxy = y
+                    }
                     context1.lineTo(x, y);
                     context1.stroke();
                 }
@@ -36,6 +115,19 @@
                 if (draw == true) {
                     x = ev.offsetX;
                     y = ev.offsetY;
+                    if (minx > x) {
+                        minx = x
+                    }
+                    if (maxx < x) {
+                        maxx = x
+                    }
+                    if (miny > y) {
+                        miny = y
+                    }
+                    if (maxy < y) {
+                        maxy = y
+                    }
+
                     context1.lineTo(x, y);
                     context1.stroke();
                     context1.closePath();
@@ -46,6 +138,18 @@
                 if (draw == true) {
                     x = ev.offsetX;
                     y = ev.offsetY;
+                    if (minx > x) {
+                        minx = x
+                    }
+                    if (maxx < x) {
+                        maxx = x
+                    }
+                    if (miny > y) {
+                        miny = y
+                    }
+                    if (maxy < y) {
+                        maxy = y
+                    }
                     context1.lineTo(x, y);
                     context1.stroke();
                     context1.closePath();
@@ -57,8 +161,13 @@
     </script>
 </head>
 <body>
-<canvas id='canv1'  width="555" height="555" style="border: 1px double black"></canvas>
-<canvas id='canv2'  width="10" height="10" style="border: 1px double black"></canvas></br>
+<canvas id='canv1' width="555" height="555" style="border: 1px double black"></canvas>
+<canvas id='canv2' width="10" height="10" style="border: 1px double black"></canvas>
+</br>
 <button onclick="clearCanvas()">Отчистить</button>
+<button onclick="Recoginze()">Распознать</button>
+<div id="canv2data">
+
+</div>
 </body>
 </html>
